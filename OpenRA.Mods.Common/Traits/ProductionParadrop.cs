@@ -140,31 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
 				newUnit.QueueActivity(new Parachute(newUnit, newUnit.CenterPosition, self));
-				var move = newUnit.TraitOrDefault<IMove>();
-				if (move != null)
-				{
-					if (exitinfo.MoveIntoWorld)
-					{
-						if (exitinfo.ExitDelay > 0)
-							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
-
-						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-						newUnit.QueueActivity(new AttackMoveActivity(newUnit, move.MoveTo(exitLocation, 1)));
-					}
-				}
-
-				newUnit.SetTargetLine(target, rp.Value != null ? Color.Red : Color.Green, false);
-
-				if (!self.IsDead)
-					foreach (var t in self.TraitsImplementing<INotifyProduction>())
-						t.UnitProduced(self, newUnit, exit);
-
-				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
-				foreach (var notify in notifyOthers)
-					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
-
-				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
-					t.BuildingComplete(newUnit);
+				
 			});
 		}
 	}
