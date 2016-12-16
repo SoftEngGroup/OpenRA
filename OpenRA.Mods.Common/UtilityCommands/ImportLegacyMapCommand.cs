@@ -307,20 +307,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (worldNode == null)
 				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
 
-			if (scorches.Any())
-			{
-				var initialScorches = new MiniYamlNode("InitialSmudges", new MiniYaml("", scorches));
-				var smudgeLayer = new MiniYamlNode("SmudgeLayer@SCORCH", new MiniYaml("", new List<MiniYamlNode>() { initialScorches }));
-				worldNode.Value.Nodes.Add(smudgeLayer);
-			}
-
-			if (craters.Any())
-			{
-				var initialCraters = new MiniYamlNode("InitialSmudges", new MiniYaml("", craters));
-				var smudgeLayer = new MiniYamlNode("SmudgeLayer@CRATER", new MiniYaml("", new List<MiniYamlNode>() { initialCraters }));
-				worldNode.Value.Nodes.Add(smudgeLayer);
-			}
-
+		
 			if (worldNode.Value.Nodes.Any() && !Map.RuleDefinitions.Nodes.Contains(worldNode))
 				Map.RuleDefinitions.Nodes.Add(worldNode);
 		}
