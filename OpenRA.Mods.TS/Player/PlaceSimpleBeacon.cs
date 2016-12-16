@@ -58,23 +58,7 @@ namespace OpenRA.Mods.TS.Traits
 					self.World.Remove(playerBeacon);
 
 				playerBeacon = new AnimatedBeacon(self.Owner, pos, info.Duration, info.Palette, info.IsPlayerPalette, info.BeaconImage, info.BeaconSequence);
-				self.World.Add(playerBeacon);
-
-				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-					Game.Sound.PlayNotification(self.World.Map.Rules, null, info.NotificationType, info.Notification,
-						self.World.RenderPlayer != null ? self.World.RenderPlayer.Faction.InternalName : null);
-
-				if (radarPings != null)
-				{
-					if (playerRadarPing != null)
-						radarPings.Remove(playerRadarPing);
-
-					playerRadarPing = radarPings.Add(
-						() => self.Owner.IsAlliedWith(self.World.RenderPlayer),
-						pos,
-						self.Owner.Color.RGB,
-						info.Duration);
-				}
+				
 			});
 		}
 	}
