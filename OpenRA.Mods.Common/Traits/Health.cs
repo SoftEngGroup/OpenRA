@@ -117,9 +117,6 @@ namespace OpenRA.Mods.Common.Traits
 				PreviousDamageState = DamageState.Dead,
 			};
 
-			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
-					.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
-				nd.Damaged(self, ai);
 
 			foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 				nd.DamageStateChanged(self, ai);
