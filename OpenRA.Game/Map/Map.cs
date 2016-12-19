@@ -290,9 +290,7 @@ namespace OpenRA
 			// Will be dropped on save if nothing is added to it
 			RuleDefinitions = new MiniYaml("");
 
-			Tiles = new CellLayer<TerrainTile>(Grid.Type, size);
-			Resources = new CellLayer<ResourceTile>(Grid.Type, size);
-			Height = new CellLayer<byte>(Grid.Type, size);
+			
 			if (Grid.MaximumTerrainHeight > 0)
 			{
 				Height.CellEntryChanged += UpdateProjection;
