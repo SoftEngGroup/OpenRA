@@ -96,18 +96,6 @@ namespace OpenRA.Mods.Common.Traits
 				cargo = new Stack<Actor>(init.Get<RuntimeCargoInit, Actor[]>());
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
-			else if (init.Contains<CargoInit>())
-			{
-				foreach (var u in init.Get<CargoInit, string[]>())
-				{
-					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
-						new TypeDictionary { new OwnerInit(self.Owner) });
-
-					cargo.Push(unit);
-				}
-
-				totalWeight = cargo.Sum(c => GetWeight(c));
-			}
 			else
 			{
 				foreach (var u in info.InitialUnits)
