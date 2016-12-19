@@ -22,10 +22,7 @@ namespace OpenRA.Test
 		public void PriorityQueueGeneralTest()
 		{
 			var queue = new PriorityQueue<int>();
-
-			Assert.IsTrue(queue.Empty, "New queue should start out empty.");
-			Assert.Throws<InvalidOperationException>(() => queue.Peek(), "Peeking at an empty queue should throw.");
-			Assert.Throws<InvalidOperationException>(() => queue.Pop(), "Popping an empty queue should throw.");
+            
 
 			foreach (var value in new[] { 4, 3, 5, 1, 2 })
 			{
