@@ -24,19 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");
 			var headerLines = !string.IsNullOrEmpty(content.InstallPromptMessage) ? content.InstallPromptMessage.Replace("\\n", "\n").Split('\n') : new string[0];
-			var headerHeight = 0;
-			foreach (var l in headerLines)
-			{
-				var line = (LabelWidget)headerTemplate.Clone();
-				line.GetText = () => l;
-				line.Bounds.Y += headerHeight;
-				panel.AddChild(line);
-
-				headerHeight += headerTemplate.Bounds.Height;
-			}
-
-			panel.Bounds.Height += headerHeight;
-			panel.Bounds.Y -= headerHeight / 2;
+			
 
 			var advancedButton = panel.Get<ButtonWidget>("ADVANCED_BUTTON");
 			advancedButton.Bounds.Y += headerHeight;
