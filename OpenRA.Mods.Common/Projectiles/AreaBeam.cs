@@ -105,10 +105,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			actorAttackBase = args.SourceActor.Trait<AttackBase>();
 
 			var world = args.SourceActor.World;
-			if (info.Speed.Length > 1)
-				speed = new WDist(world.SharedRandom.Next(info.Speed[0].Length, info.Speed[1].Length));
-			else
-				speed = info.Speed[0];
+			
 
 			// Both the head and tail start at the source actor, but initially only the head is travelling.
 			headPos = args.Source;
