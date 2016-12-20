@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
+		public virtual object subtank(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
 	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
@@ -58,9 +59,20 @@ namespace OpenRA.Mods.Common.Traits
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
+			
+			if (order.OrderID == "subtank")
+				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			
+			return null;
+				
 		}
 
 		bool CanRepairAt(Actor target)
+		{
+			return info.RepairBuildings.Contains(target.Info.Name);
+		}
+		
+		bool SubtankRepairAt(Actor target)
 		{
 			return info.RepairBuildings.Contains(target.Info.Name);
 		}
@@ -69,8 +81,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return info.RepairBuildings.Contains(target.Info.Name);
 		}
+		
+		bool SubtankRearmAt(Actor target)
+		{
+			return info.RepairBuildings.Contains(target.Info.Name);
+		}
 
 		bool CanRepair()
+		{
+			return health.DamageState > DamageState.Undamaged;
+		}
+		
+		bool SubtankRepair()
 		{
 			return health.DamageState > DamageState.Undamaged;
 		}
@@ -79,10 +101,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
 		}
+		
+		bool SubtankRearm()
+		{
+			return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
+		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "Repair" && CanRepair()) ? info.Voice : null;
+			return (order.OrderString == "Subtank" && CanRepair()) ? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
