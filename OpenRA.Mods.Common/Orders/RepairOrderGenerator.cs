@@ -53,10 +53,6 @@ namespace OpenRA.Mods.Common.Orders
 			var repairable = underCursor.TraitOrDefault<Repairable>();
 			if (repairable == null)
 				yield break;
-			
-			var subtankrepairable = underCursor.TraitOrDefault<Repairable>();
-			if (subtankrepairable == null)
-				yield break;
 
 			// Find a building to repair at.
 			var repairBuilding = repairable.FindRepairBuilding(underCursor);
@@ -64,15 +60,7 @@ namespace OpenRA.Mods.Common.Orders
 				yield break;
 
 			yield return new Order("Repair", underCursor, false) { TargetActor = repairBuilding };
-			
-			var subtankBuilding = repairable.FindRepairBuilding(underCursor);
-			if (subtankBuilding == null)
-				yield break;
-
-			yield return new Order("Repair", underCursor, false) { TargetActor = repairBuilding };
 		}
-		
-
 
 		public void Tick(World world)
 		{

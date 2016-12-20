@@ -17,7 +17,6 @@ using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
-
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
@@ -28,7 +27,6 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
-		public virtual object subtank(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
 	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
@@ -37,7 +35,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Health health;
 		readonly IMove movement;
 		readonly AmmoPool[] ammoPools;
-        
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
@@ -45,7 +42,6 @@ namespace OpenRA.Mods.Common.Traits
 			health = self.Trait<Health>();
 			movement = self.Trait<IMove>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
-			
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -56,16 +52,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "Repair")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-
-			return null;
-		
-		
-		if (order.OrderID == "subtank")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -76,59 +65,35 @@ namespace OpenRA.Mods.Common.Traits
 			return info.RepairBuildings.Contains(target.Info.Name);
 		}
 
-		bool SubtankRepairAt(Actor target)
-		{
-			return info.RepairBuildings.Contains(target.Info.Name);
-		}
-		
 		bool CanRearmAt(Actor target)
 		{
 			return info.RepairBuildings.Contains(target.Info.Name);
 		}
 
-		bool SubtankRearmAt(Actor target)
-		{
-			return info.RepairBuildings.Contains(target.Info.Name);
-		}
-		
 		bool CanRepair()
 		{
 			return health.DamageState > DamageState.Undamaged;
 		}
-		
-		bool SubtankRepair()
-		{
-			return health.DamageState > DamageState.Undamaged;
-		}
-		
+
 		bool CanRearm()
 		{
 			return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
 		}
-		
-		bool SubtankRearm()
-		{
-			return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
-		}
-		
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "Repair" && CanRepair()) ? info.Voice : null;
-			return (order.OrderString == "subtank" && CanRepair()) ? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Repair")
-
 			{
 				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
 					return;
 
 				var target = Target.FromOrder(self.World, order);
 				self.SetTargetLine(target, Color.Green);
-				
 
 				self.CancelActivity();
 				self.QueueActivity(new WaitForTransport(self, ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target),
@@ -169,18 +134,12 @@ namespace OpenRA.Mods.Common.Traits
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
 					info.RepairBuildings.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
-				
-				
-				
-				
-                
-			
+
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
 			return repairBuilding.FirstOrDefault().Actor;
 		}
 
 		static void TryCallTransport(Actor self, Target target, Activity nextActivity)
-		
 		{
 			var transport = self.TraitOrDefault<ICallForTransport>();
 			if (transport == null)
@@ -191,7 +150,6 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			transport.RequestTransport(self, targetCell, nextActivity);
-
 		}
 	}
 }
